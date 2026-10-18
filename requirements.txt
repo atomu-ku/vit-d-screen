@@ -1,0 +1,16 @@
+# Data processing and visualization
+numpy
+pandas
+matplotlib
+seaborn
+
+# Modeling and interpretability
+scikit-learn
+xgboost
+shap
+
+# Notebook environment and styled tables
+jupyterlab
+ipykernel
+ipywidgets
+jinja2

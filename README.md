@@ -84,7 +84,7 @@ The notebook's major checkpoints, in execution order, are:
 The notebook records Python **3.14.6**. To install its imported packages and open it from the repository root:
 
 ```bash
-python3 -m pip install pandas numpy matplotlib seaborn scikit-learn xgboost shap jupyterlab
+python3 -m pip install -r requirements.txt
 cd notebook
 python3 -m jupyterlab vit-d-screen.ipynb
 ```
