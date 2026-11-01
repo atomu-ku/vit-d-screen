@@ -1,0 +1,9 @@
+# Runtime versions used to verify the exported model and reference predictions.
+fastapi==0.162.0
+uvicorn[standard]==0.54.0
+pydantic==2.14.2
+numpy==2.5.2
+pandas==2.3.3
+scikit-learn==1.9.0
+xgboost==3.4.1
+

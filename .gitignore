@@ -8,6 +8,11 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.coverage
+htmlcov/
+*$py.class
+*.so
+.Python
 
 # Virtual environments
 .venv/
@@ -25,3 +30,15 @@ env/
 # Editor settings
 .vscode/
 .idea/
+
+# Frontend dependencies, generated builds and deployment metadata
+node_modules/
+dist/
+dist-ssr/
+*.tsbuildinfo
+*.local
+.vercel/
+
+# Local OS files and logs
+Thumbs.db
+*.log

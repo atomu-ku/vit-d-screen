@@ -1,0 +1,82 @@
+[
+  {
+    "index": 0,
+    "features": {
+      "age": 33.0,
+      "stay_in_shade": 4.0,
+      "wear_sleeves": 3.0,
+      "use_sunscreen": 4.0,
+      "bmi": 23.3,
+      "vitd_supplement": 13.333,
+      "sun_per_week": 600.0,
+      "active_smoker": 0.0,
+      "female": 1.0
+    },
+    "prob": 0.23271611332893372,
+    "pred_35": 0
+  },
+  {
+    "index": 1,
+    "features": {
+      "age": 22.0,
+      "stay_in_shade": 1.0,
+      "wear_sleeves": 0.0,
+      "use_sunscreen": 0.0,
+      "bmi": 28.2,
+      "vitd_supplement": 0.0,
+      "sun_per_week": 550.0,
+      "active_smoker": 0.0,
+      "female": 0.0
+    },
+    "prob": 0.7828219532966614,
+    "pred_35": 1
+  },
+  {
+    "index": 2,
+    "features": {
+      "age": 28.0,
+      "stay_in_shade": 2.0,
+      "wear_sleeves": 1.0,
+      "use_sunscreen": 1.0,
+      "bmi": 21.7,
+      "vitd_supplement": 0.0,
+      "sun_per_week": 100.0,
+      "active_smoker": 0.0,
+      "female": 0.0
+    },
+    "prob": 0.6497477889060974,
+    "pred_35": 1
+  },
+  {
+    "index": 3,
+    "features": {
+      "age": 31.0,
+      "stay_in_shade": 0.0,
+      "wear_sleeves": 0.0,
+      "use_sunscreen": 0.0,
+      "bmi": 21.7,
+      "vitd_supplement": 0.0,
+      "sun_per_week": 540.0,
+      "active_smoker": 0.0,
+      "female": 0.0
+    },
+    "prob": 0.693235456943512,
+    "pred_35": 1
+  },
+  {
+    "index": 4,
+    "features": {
+      "age": 20.0,
+      "stay_in_shade": 2.0,
+      "wear_sleeves": 2.0,
+      "use_sunscreen": 0.0,
+      "bmi": 24.9,
+      "vitd_supplement": 0.0,
+      "sun_per_week": 0.0,
+      "active_smoker": 0.0,
+      "female": 0.0
+    },
+    "prob": 0.8020398020744324,
+    "pred_35": 1
+  }
+]

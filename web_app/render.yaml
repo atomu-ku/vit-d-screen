@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: vit-d-screen-api
+    runtime: python
+    rootDir: web_app/backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.14.6
+      - key: CORS_ORIGINS
+        sync: false
+      - key: MODEL_PATH
+        value: model/xgb_vitd_model.pkl
+

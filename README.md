@@ -1,6 +1,14 @@
 # Lifestyle-Based Vitamin D Deficiency Screening Model in Asian Adults
 
-> **Note on Full Methodology:** The full step-by-step analytical workflow, code, and visualizations are documented in the [Primary Analysis Notebook](notebook/vit-d-screen.ipynb).
+**[Open the Vitamin D Risk Assessment](https://atomu-ku.github.io/vit-d-screen/)** to estimate vitamin D deficiency risk from personal health information and lifestyle habits. The app supports **English and Thai**, uses the project's trained XGBoost model, and explains each factor's contribution. Assessment answers are processed in your browser and are not submitted to an API. No account or installation is required.
+
+[![GitHub Pages deployment](https://github.com/atomu-ku/vit-d-screen/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/atomu-ku/vit-d-screen/actions/workflows/deploy-pages.yml)
+
+For screening, research, and educational use only; this is not a diagnosis or a substitute for clinical evaluation and blood testing.
+
+[Web app development & deployment](web_app/README.md) · [Full analysis notebook](notebook/vit-d-screen.ipynb) · [Research details](#1-clinical-background--objective)
+
+The public app runs on **GitHub Pages**, with prediction and SHAP factor contributions computed locally from an exported copy of the original trees. Browser/Python parity checks cover **644 cases**, including all 169 unique split thresholds and their float32 neighbors. Python code remains in the repository for reproducibility and model verification.
 
 ## 1. Clinical Background & Objective
 
@@ -81,16 +89,14 @@ The notebook's major checkpoints, in execution order, are:
 5. [Model Comparison and Calibration](notebook/vit-d-screen.ipynb#model-comparison-and-calibration)
 6. [Champion Model Selection: XGBoost](notebook/vit-d-screen.ipynb#champion-model-selection-xgboost)
 
-The notebook records Python **3.14.6**. To install its imported packages and open it from the repository root:
+The notebook records Python **3.14.6**. Research dependencies are listed separately from the web API dependencies; the model-library versions are aligned with the backend's verified reference predictions. To open the notebook from the repository root:
 
 ```bash
-python3 -m pip install -r requirements.txt
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
 cd notebook
-python3 -m jupyterlab vit-d-screen.ipynb
+python -m jupyterlab vit-d-screen.ipynb
 ```
 
-Run cells sequentially with the notebook directory as the working directory. Data loading retrieves NHANES files from CDC and writes the merged CSV to `../data/nhanes_vitd_2011_2018.csv`.
-
----
-
-The complete step-by-step analytical workflow, code, and visualizations are documented in the [companion notebook](notebook/vit-d-screen.ipynb).
+Run cells sequentially with the notebook directory as the working directory. Data loading retrieves NHANES files from CDC and writes the merged CSV to `../data/nhanes_vitd_2011_2018.csv`. The committed CSV is a data snapshot; the current notebook downloads the source modules rather than loading that snapshot. The final serialization cell exports the trained model to `web_app/backend/model/xgb_vitd_model.pkl`. After changing that model, run `python scripts/export_browser_model.py` from the repository root to refresh the browser artifact, then run the parity checks described in the web app guide.
