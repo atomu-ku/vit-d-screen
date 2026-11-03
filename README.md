@@ -1,24 +1,27 @@
 # Lifestyle-Based Vitamin D Deficiency Screening Model in Asian Adults
 
-**[Open the Vitamin D Risk Assessment](https://atomu-ku.github.io/vit-d-screen/)** to estimate vitamin D deficiency risk from personal health information and lifestyle habits. The app supports **English and Thai**, uses the project's trained XGBoost model, and explains each factor's contribution. Assessment answers are processed in your browser and are not submitted to an API. No account or installation is required.
+<p align="center">
+  <strong>Vitamin D Risk Assessment</strong><br>
+  Estimate your risk from personal health information and lifestyle habits.<br><br>
+  <a href="https://atomu-ku.github.io/vit-d-screen/">
+    <img src="assets/start-assessment.svg" alt="Start Assessment →" width="360" height="64">
+  </a><br>
+  <sub>Available in English and Thai</sub>
+</p>
 
-[![GitHub Pages deployment](https://github.com/atomu-ku/vit-d-screen/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/atomu-ku/vit-d-screen/actions/workflows/deploy-pages.yml)
-
-For screening, research, and educational use only; this is not a diagnosis or a substitute for clinical evaluation and blood testing.
-
-[Web app development & deployment](web_app/README.md) · [Full analysis notebook](notebook/vit-d-screen.ipynb) · [Research details](#1-clinical-background--objective)
-
-The public app runs on **GitHub Pages**, with prediction and SHAP factor contributions computed locally from an exported copy of the original trees. Browser/Python parity checks cover **644 cases**, including all 169 unique split thresholds and their float32 neighbors. Python code remains in the repository for reproducibility and model verification.
+**[View the full analysis notebook →](notebook/vit-d-screen.ipynb)** for the complete workflow, from data preparation and feature engineering to model evaluation and SHAP interpretation.
 
 ## 1. Clinical Background & Objective
 
-This project investigates non-invasive screening for vitamin D deficiency in primary care settings with limited access to serum vitamin D level testing. It compares Random Forest and XGBoost using lifestyle, demographic, and anthropometric predictors to identify individuals for confirmatory evaluation. The notebook defines the binary endpoint as serum 25-hydroxyvitamin D **<50 nmol/L**.
+This project investigates non-invasive screening for vitamin D deficiency in primary care settings with limited access to serum vitamin D level testing. It develops a machine learning model using lifestyle factors, demographic characteristics, and body measurements to identify individuals at risk of vitamin D deficiency, defined as serum 25-hydroxyvitamin D **<50 nmol/L**.
 
-An additional objective is to examine the relative contributions of lifestyle and demographic factors to predicted deficiency risk, providing interpretable evidence to inform targeted lifestyle counseling and preventive health promotion.
+The objective is to use the model to triage individuals by risk and guide referral for further investigation or lifestyle intervention.
 
 ## 2. Cohort & Clinical Data Pipeline
 
-The study integrates six NHANES modules across four survey cycles (2011–2018), joined by participant identifier (`SEQN`). The cohort comprises **1,935 Asian adults aged 20–59 years** with serum vitamin D measurements; confirmed pregnancies were excluded.
+This project uses data from the National Health and Nutrition Examination Survey (NHANES), collected by the Centers for Disease Control and Prevention (CDC). The datasets are publicly accessible through the [CDC NHANES data portal](https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/).
+
+NHANES data from **2011–2018**, comprising **1,935 non-pregnant Asian adults aged 20–59 years** with serum vitamin D measurements, are used to develop a model to predict vitamin D deficiency.
 
 The model inputs comprise the following lifestyle, demographic, and anthropometric features:
 
@@ -27,20 +30,18 @@ The model inputs comprise the following lifestyle, demographic, and anthropometr
 | Age (`age`) | `RIDAGEYR` | Age in years. |
 | Sex (`female`) | `RIAGENDR` | Participant sex. |
 | Body mass index (`bmi`) | `BMXBMI` | Body mass index (kg/m²). |
+| Recent smoking (`active_smoker`) | `SMQ680`, `SMQ681` | Smoking status during the past five days. |
 | Weekly outdoor exposure (`sun_per_week`) | `DED120`, `DED125` | Total time spent outdoors per week (minutes). |
 | Shade-seeking (`stay_in_shade`) | `DEQ034A` | Frequency of staying in the shade. |
 | Long-sleeve use (`wear_sleeves`) | `DEQ034C` | Frequency of wearing long sleeves outdoors. |
 | Sunscreen use (`use_sunscreen`) | `DEQ034D` | Frequency of sunscreen use. |
 | Vitamin D supplementation (`vitd_supplement`) | `DSQTVD`, supported by `DSD010` | Daily vitamin D intake from supplements (µg/day). |
-| Recent smoking (`active_smoker`) | `SMQ680`, `SMQ681` | Smoking status during the past five days. |
 
 *Feature definitions and transformations: [Exploring potential behavioral features](notebook/vit-d-screen.ipynb#exploring-potential-behavioral-features) and [Data structuring](notebook/vit-d-screen.ipynb#data-structuring).*
 
 ## 3. Methodology & Benchmark Performance
 
-The cohort was divided into training and test sets using a stratified 80:20 split (`random_state=0`), yielding **387 test participants**, including **162 deficiency cases (41.9%)**. Class-weighted Random Forest and XGBoost models were tuned using five-fold grid-search cross-validation, selecting by ROC-AUC.
-
-Test-set performance at threshold **0.50**, as reported in the notebook's model comparison table; best values are bolded.
+The cohort was divided into **1,548 training participants** and **387 test participants**. Class-weighted Random Forest and XGBoost models were tuned using five-fold grid-search cross-validation, selecting by ROC-AUC.
 
 | Metric | Random Forest | XGBoost |
 |---|---:|---:|
@@ -54,7 +55,7 @@ Test-set performance at threshold **0.50**, as reported in the notebook's model 
 
 *Figure 1. Test-set ROC curves: Random Forest AUC 0.763; XGBoost AUC 0.767.*
 
-The XGBoost threshold was lowered to **0.35** to better suit a screening test that prioritizes sensitivity. Test-set sensitivity increased from **88.27% to 95.06%**, reducing missed deficiency cases from **19 to 8**, while precision decreased from **58.85% to 54.23%**.
+The XGBoost threshold was lowered to **0.35** to better support a screening test that prioritizes sensitivity. Test-set sensitivity increased from **88.27% to 95.06%**, while precision decreased from **58.85% to 54.23%**.
 
 ![XGBoost confusion matrices at thresholds 0.50 and 0.35](assets/threshold-comparison.png)
 
@@ -66,7 +67,7 @@ The XGBoost threshold was lowered to **0.35** to better suit a screening test th
 
 ### Model Interpretability and Clinical Explanation (SHAP)
 
-SHAP identified **vitamin D supplementation** as the strongest lifestyle predictor, followed overall by **age and BMI**. Sex and other lifestyle factors—outdoor exposure, sun-protection behaviors, and smoking—contributed less to model predictions.
+SHAP identified **vitamin D supplementation** as the strongest lifestyle predictor, followed overall by **age and BMI**. Sex and other lifestyle factors, including outdoor exposure, sun-protection behaviors, and smoking, contributed less to model predictions.
 
 ![SHAP summary of XGBoost feature contributions](assets/shap-summary.png)
 
@@ -89,7 +90,7 @@ The notebook's major checkpoints, in execution order, are:
 5. [Model Comparison and Calibration](notebook/vit-d-screen.ipynb#model-comparison-and-calibration)
 6. [Champion Model Selection: XGBoost](notebook/vit-d-screen.ipynb#champion-model-selection-xgboost)
 
-The notebook records Python **3.14.6**. Research dependencies are listed separately from the web API dependencies; the model-library versions are aligned with the backend's verified reference predictions. To open the notebook from the repository root:
+To run the analysis notebook, execute the following commands from the project root:
 
 ```bash
 python3 -m venv .venv
@@ -99,4 +100,4 @@ cd notebook
 python -m jupyterlab vit-d-screen.ipynb
 ```
 
-Run cells sequentially with the notebook directory as the working directory. Data loading retrieves NHANES files from CDC and writes the merged CSV to `../data/nhanes_vitd_2011_2018.csv`. The committed CSV is a data snapshot; the current notebook downloads the source modules rather than loading that snapshot. The final serialization cell exports the trained model to `web_app/backend/model/xgb_vitd_model.pkl`. After changing that model, run `python scripts/export_browser_model.py` from the repository root to refresh the browser artifact, then run the parity checks described in the web app guide.
+Run cells in order from the `notebook` directory to download NHANES data from CDC, save the combined dataset, and export the trained model.
